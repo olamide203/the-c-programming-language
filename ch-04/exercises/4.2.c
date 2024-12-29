@@ -1,4 +1,13 @@
 #include <ctype.h>
+#include <stdio.h>
+
+double atof(char s[]);
+
+int main() {
+  char s[] = "123.45e-6";
+
+  printf(" %s - %.9f\n", s, atof(s));
+}
 
 /* expand atof to handle scientific notation of the form 123.45e-6 */
 double atof(char s[]) {

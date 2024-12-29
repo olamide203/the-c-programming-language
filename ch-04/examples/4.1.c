@@ -2,7 +2,7 @@
 #define MAXLINE 1000 /* maximum input line length   */
 
 int getnewline(char line[], int max);
-int strindex(char source[], char searchfor[]);
+char *strindex(const char source[], const char searchfor[]);
 
 int main() {
   char line[MAXLINE];
@@ -10,7 +10,7 @@ int main() {
   char pattern[] = "ould";
 
   while (getnewline(line, MAXLINE) > 0) {
-    if (strindex(line, pattern) > 0) {
+    if (strindex(line, pattern) != NULL) {
       printf("%s", line);
       found++;
     }
@@ -35,15 +35,24 @@ int getnewline(char s[], int max) {
   return i;
 }
 
-/*strindex: return index of t in s, -1 if none*/
-int strindex(char s[], char t[]) {
-  int i, j, k;
+/*strindex: return pointer to first occurence of t in s.
+ * return s if t is an empty string
+ * return NULL if t is not in s
+ */
 
-  for (i = 0; s[i] != '\0'; ++i) {
-    for (j = i, k = 0; t[k] != '\0' && s[j] == t[k]; j++, k++)
-      ;
-    if (k > 0 && t[k] == '\0')
-      return i;
+char *strindex(const char *s, const char *t) {
+  if (*t == '\0') {
+    return (char *)s;
   }
-  return -1;
+
+  for (; *s != '\0'; ++s) {
+    const char *p = s;
+    const char *q = t;
+
+    while (*p != '\0' && *q != '\0' && *p++ == *q++)
+      ;
+    if (*q == '\0')
+      return (char *)s;
+  }
+  return NULL;
 }
